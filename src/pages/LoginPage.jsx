@@ -77,7 +77,7 @@ const LoginPage = () => {
       if (result.success) {
         navigate("/dashboard");
       } else {
-        showError(`Error: ${result.error}`);
+        showError(`${result.error}`);
       }
     } catch {
       showError("Hubo un error inesperado.");
