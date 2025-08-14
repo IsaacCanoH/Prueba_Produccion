@@ -1,4 +1,4 @@
-import { Clock, Camera, FileText, AlertTriangle, CalendarRange, CalendarDays } from "lucide-react"
+import { Clock, Camera, FileText, AlertTriangle } from "lucide-react"
 import AttendancesTab from "./AttendancesTab"
 import IncidenciasTab from "./IncidentsTabs"
 
@@ -18,16 +18,11 @@ const DashboardTabs = ({
   loadingIncidencias,
   setShowModal,
   handleViewIncidencia,
-  handleDownloadFile
+  handleDownloadFile,
 }) => {
   const renderTabContent = () => {
     if (activeTab === "attendances") {
-      return (
-        <AttendancesTab
-          attendanceHistory={attendanceHistory}
-          statistics={statistics}
-        />
-      )
+      return <AttendancesTab attendanceHistory={attendanceHistory} statistics={statistics} />
     }
 
     if (activeTab === "incidencias") {
@@ -51,7 +46,7 @@ const DashboardTabs = ({
 
   const tabs = [
     { key: "attendances", label: "Mis Asistencias", icon: <Clock size={16} className="me-2" /> },
-    { key: "incidencias", label: "Mis Incidencias", icon: <FileText size={16} className="me-2" /> }
+    { key: "incidencias", label: "Mis Incidencias", icon: <FileText size={16} className="me-2" /> },
   ]
 
   return (
@@ -103,28 +98,56 @@ const DashboardTabs = ({
         </div>
       </div>
 
-      {/* Tabs navegación */}
+      {/* Tabs navegación con scroll horizontal */}
       <div className="card border-0 shadow-sm mb-4">
         <div className="card-header bg-white border-0 px-0 pt-0">
-          <ul className="nav nav-tabs border-0 px-4 pt-4">
-            {tabs.map(({ key, label, icon }) => (
-              <li className="nav-item" key={key}>
-                <button
-                  className={`nav-link border-0 px-3 py-2 fw-medium d-flex align-items-center ${activeTab === key
-                    ? "active text-primary bg-primary bg-opacity-10"
-                    : "text-muted"
+          {/* Contenedor con scroll horizontal */}
+          <div className="px-4 pt-4" style={{ overflowX: "auto", scrollbarWidth: "thin" }}>
+            <ul className="nav nav-tabs border-0 d-flex flex-nowrap" style={{ minWidth: "max-content" }}>
+              {tabs.map(({ key, label, icon }) => (
+                <li className="nav-item flex-shrink-0" key={key}>
+                  <button
+                    className={`nav-link border-0 px-3 py-2 fw-medium d-flex align-items-center text-nowrap ${
+                      activeTab === key ? "active text-primary bg-primary bg-opacity-10" : "text-muted"
                     }`}
-                  onClick={() => setActiveTab(key)}
-                >
-                  {icon}
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ul>
+                    onClick={() => setActiveTab(key)}
+                  >
+                    {icon}
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className="card-body p-4">{renderTabContent()}</div>
       </div>
+
+      <style>{`
+        /* Estilos para el scroll horizontal en webkit browsers */
+        div[style*="overflowX: auto"]::-webkit-scrollbar {
+          height: 4px;
+        }
+        
+        div[style*="overflowX: auto"]::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 2px;
+        }
+        
+        div[style*="overflowX: auto"]::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 2px;
+        }
+        
+        div[style*="overflowX: auto"]::-webkit-scrollbar-thumb:hover {
+          background: #a8a8a8;
+        }
+
+        /* Smooth scrolling */
+        div[style*="overflowX: auto"] {
+          scroll-behavior: smooth;
+        }
+      `}</style>
     </>
   )
 }
