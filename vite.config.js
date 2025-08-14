@@ -13,8 +13,8 @@ export default defineConfig({
         name: 'Reloj Checador',
         short_name: 'Reloj Checador',
         description: 'INAEBA',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        theme_color: '#4310A1',
+        background_color: '#4310A1',
         display: 'standalone',
         orientation: 'portrait',
         start_url: '/',
@@ -30,7 +30,7 @@ export default defineConfig({
             type: 'image/png'
           },
           {
-            src: 'icons/icon-app-2.png',
+            src: 'icons/icon-app.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
