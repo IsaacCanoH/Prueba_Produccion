@@ -30,7 +30,7 @@ export default defineConfig({
             type: 'image/png'
           },
           {
-            src: 'icons/icon-app.png',
+            src: 'icons/icon-app-2.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
