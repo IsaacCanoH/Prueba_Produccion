@@ -10,9 +10,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Tu Nombre de App',
-        short_name: 'TuApp',
-        description: 'Descripción breve de tu aplicación',
+        name: 'Reloj Checador',
+        short_name: 'Reloj Checador',
+        description: 'INAEBA',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
