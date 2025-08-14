@@ -92,7 +92,7 @@ const DashboardTabs = ({
               disabled={isOfflineExpired}
             >
               <FileText size={18} className="me-2" />
-              Nueva Incidencia
+              Registrar Incidencia
             </button>
           </div>
         </div>
