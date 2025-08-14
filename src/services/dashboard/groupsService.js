@@ -1,4 +1,4 @@
-const API_URL = "https://backend-node-9ax3.onrender.com/api/grupo";
+const API_URL = "http://localhost:3000/api/grupo";
 
 export const createGroup = async (formData) => {
   try {

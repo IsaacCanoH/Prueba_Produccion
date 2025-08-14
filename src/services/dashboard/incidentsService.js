@@ -2,7 +2,7 @@ import { db } from "../../db/indexedDB";
 import { encryptData, decryptData } from "../../utils/cryptoUtils";
 import { saveSecureData } from "../security/saveDataService";
 
-const API_URL = "https://backend-node-9ax3.onrender.com/api/inicidencia";
+const API_URL = "http://localhost:3000/api/inicidencia";
 
 export const createIncident = async (formData) => {
   try {
@@ -30,33 +30,6 @@ export const createIncident = async (formData) => {
   }
 };
 
-export const updateIncidentStatus = async (incidenciaId, formData) => {
-  try {
-    const response = await fetch(`${API_URL}/actualizar-estado/${incidenciaId}`,
-      {
-        method: "PUT",
-        body: formData,
-        cache: "no-store",
-      }
-    );
-
-    const contentType = response.headers.get("Content-Type");
-    const isJSON = contentType?.includes("application/json");
-
-    if (!response.ok) {
-      const errorText = isJSON
-        ? (await response.json()).error || "Error al actualizar el estado de la incidencia."
-        : await response.text();
-
-      throw new Error(errorText || "Error desconocido al actualizar el estado de la incidencia.");
-    }
-
-    return isJSON ? await response.json() : { message: "Estado actualizado." };
-  } catch (err) {
-    console.error("Error al actualizar estado de incidencia:", err.message);
-    throw err;
-  }
-};
 
 export const getIncidentsByUser = async (userId) => {
   try {
@@ -91,21 +64,34 @@ export const getEligibleIncidentDates = async (userId) => {
       cache: "no-store",
     });
 
-    const contentType = response.headers.get("Content-Type");
-    const isJSON = contentType?.includes("application/json");
+    const contentType = response.headers.get("Content-Type") || "";
+    const isJSON = contentType.includes("application/json");
 
     if (!response.ok) {
       const errorText = isJSON
         ? (await response.json()).error || "Error al obtener fechas elegibles."
         : await response.text();
-
       throw new Error(errorText || "Error desconocido al obtener fechas elegibles.");
     }
 
-    const result = isJSON ? await response.json() : { data: [] };
-    return Array.isArray(result?.data) ? result.data : [];
+    const raw = isJSON ? await response.json() : { data: [] };
+
+    const arr = Array.isArray(raw)
+      ? raw
+      : Array.isArray(raw?.data)
+      ? raw.data
+      : Array.isArray(raw?.fechas)
+      ? raw.fechas
+      : [];
+    const fechas = arr
+      .filter((d) => d && typeof d.fecha === "string")
+      .map((d) => ({
+        fecha: d.fecha,
+        estado_final: d.estado_final || d.estado || null,
+      }));
 
     await saveEligibleIncidentDatesOffline(userId, fechas);
+
     return fechas;
   } catch (err) {
     console.error("Error al obtener fechas elegibles:", err.message);

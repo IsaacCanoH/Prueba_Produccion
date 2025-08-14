@@ -4,7 +4,7 @@ import {
   createIncidentOffline,
   getTypeIncident,
   getEligibleIncidentDates,
-   getEligibleIncidentDatesOffline,
+  getEligibleIncidentDatesOffline,
 } from "../services/dashboard/incidentsService";
 import { useToast } from "../context/ToastContext";
 import { useNotifications } from "../context/NotificationContext";
